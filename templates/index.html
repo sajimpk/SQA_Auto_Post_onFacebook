@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <title>🤖 SQA Auto Poster Dashboard - Futuristic AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0; padding: 0;
+      color: #1f2937; /* dark slate */
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      user-select: none;
+      position: relative;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .container {
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow:
+        0 8px 24px rgba(31, 41, 55, 0.12),
+        inset 0 0 12px rgba(96, 165, 250, 0.15);
+      padding: 40px 30px 60px;
+      max-width: 720px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    h2 {
+      font-size: 2.4rem;
+      margin-bottom: 24px;
+      text-align: center;
+      color: #2563eb; /* blue-600 */
+      text-shadow: 0 0 5px rgba(37, 99, 235, 0.4);
+    }
+
+    /* AI message bubble */
+    .ai-message {
+      background: #e0f2fe; /* light blue */
+      border-radius: 24px;
+      padding: 22px 28px;
+      margin-bottom: 36px;
+      font-size: 1.25rem;
+      line-height: 1.5;
+      color: #1e3a8a; /* blue-900 */
+      box-shadow: 0 2px 8px rgba(99, 179, 237, 0.25);
+      position: relative;
+      max-width: 100%;
+      font-weight: 600;
+      user-select: text;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      font-family: 'Orbitron', monospace;
+    }
+
+    /* Typing animation */
+    .typing {
+      border-right: 3px solid #2563eb;
+      animation: typing-caret 1s steps(1) infinite;
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+      max-width: 100%;
+    }
+
+    @keyframes typing-caret {
+      0%, 100% {
+        border-color: #2563eb;
+      }
+      50% {
+        border-color: transparent;
+      }
+    }
+
+    /* Forms */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    textarea {
+      width: 100%;
+      resize: vertical;
+      min-height: 140px;
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-size: 1rem;
+      color: #1f2937;
+      background: #f9fafb;
+      border: 1.5px solid #60a5fa; /* blue-400 */
+      box-shadow: inset 0 0 6px #93c5fd;
+      outline: none;
+      transition: border-color 0.3s ease;
+      font-family: 'Orbitron', monospace;
+      user-select: text;
+    }
+
+    textarea::placeholder {
+      color: #93c5fd;
+      font-style: italic;
+    }
+
+    textarea:focus {
+      border-color: #2563eb; /* blue-600 */
+      box-shadow: inset 0 0 10px #2563eb;
+    }
+
+    button {
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      border: none;
+      padding: 16px 36px;
+      border-radius: 14px;
+      color: #f9fafb;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow:
+        0 6px 12px rgba(37, 99, 235, 0.6);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      user-select: none;
+      letter-spacing: 0.05em;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #1e40af, #3b82f6);
+      box-shadow:
+        0 10px 20px rgba(37, 99, 235, 0.9);
+      transform: scale(1.06);
+    }
+
+    p.status {
+      margin-top: 26px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #2563eb;
+      text-align: center;
+      text-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 1.8rem;
+      }
+
+      textarea {
+        min-height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🤖 SQA Facebook Auto Poster</h2>
+
+    <div class="ai-message" id="aiMessage"></div>
+
+    <form method="post" action="/generate">
+      <button type="submit">✨ Generate Futuristic Post</button>
+    </form>
+
+    {% if generated_post %}
+    <form method="post" action="/post">
+      <textarea name="content" rows="10" placeholder="⌛ Generating high-quality content...">{{ generated_post }}</textarea>
+      <button type="submit">🚀 Post to Facebook</button>
+    </form>
+    {% endif %}
+
+    {% if post_status %}
+    <p class="status">{{ post_status }}</p>
+    {% endif %}
+  </div>
+
+  <script>
+    // AI typed message simulation:
+    const aiText = "Hello, human! 🤖\nI'm your AI assistant";
+    const container = document.getElementById("aiMessage");
+    let idx = 0;
+
+    function typeAI() {
+      if (idx <= aiText.length) {
+        container.innerHTML = '<span class="typing">' + aiText.slice(0, idx) + '</span>';
+        idx++;
+        setTimeout(typeAI, 45);
+      } else {
+        container.innerHTML = aiText.replace(/\n/g, "<br />"); // Remove cursor after done
+      }
+    }
+
+    typeAI();
+  </script>
+</body>
+</html>
